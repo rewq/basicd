@@ -11,13 +11,13 @@
 
 %token NUMBER
 %token ADD SUB MUL DIV ABS
-%token OP CP
+%token OPREN CPREN
 %token EOL
 
 %%
 
-calclist: 
-| calclist exp EOL {printf("= %d\n", $2);}
+explist: 
+| explist exp EOL {printf("= %d\n", $2);}
 ;
 
 exp: factor
@@ -27,12 +27,11 @@ exp: factor
 
 factor: term
 | factor MUL term { $$ = $1 * $3; }
-| factor DIV term { $$ = $1 / $3; }
 ;
 
 term: NUMBER
 | ABS term  { $$ = $2 >= 0 ? $2 : -$2; }
-| OP exp CP { $$ = $2; }
+| OPREN exp CPREN { $$ = $2; }
 ;
 
 %%

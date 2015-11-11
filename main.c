@@ -3,5 +3,7 @@
 #include "flex.h"
 
 int main(int argc, char **argv) {
-  yyparse();
+	int somevalue = 0;
+	int value;
+  	value = yyparse((int*)&somevalue);
 }

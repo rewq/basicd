@@ -1,27 +1,37 @@
-%output  "bison.c"
-%defines "bison.h"
-%parse-param {int *somevalue}
+/* Bison Directives */
+%output  "bison.c" // Code containing yyparse()
+%defines "bison.h" // Header file including token declarations needed by Flex
+%parse-param {int *somevalue} // Adds variables to be passed into yyparse()
 
+/* This section is copied verbatim to the s.c file generated */
 %code{
+
 #include "flex.h"
-	void yyerror (int *somevalue, char const *s){
-		fprintf (stderr, "%s\n", s);
-	}
+#include "ast.h"
+/* yyerror() needs the parse-param's defined aswell */
+void yyerror (int *somevalue, char const *s){ 
+	fprintf (stderr, "%s\n", s);
 }
 
+}
+
+/* YYLVAL types*/
 %union{
   int num;
   char var;
   struct expr* exp;
 }
 
-%token <num> NUMBER
-%token <num> ADD SUB MUL DIV ABS
-%token <num> OPREN CPREN
+/* Terminal Tokens and Type Declaration */
+%token <num> NUMBER ADD SUB MUL DIV ABS
+%token <num> OPREN CPREN CBRACK OBRACK
 %token <num> EOL
 
+/* Non Terminal Type Declaration */
 %type <num> exp factor term
 
+
+/* Grammar Section */
 %%
 
 explist: 

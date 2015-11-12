@@ -9,10 +9,18 @@
 	}
 }
 
-%token NUMBER
-%token ADD SUB MUL DIV ABS
-%token OPREN CPREN
-%token EOL
+%union{
+  int num;
+  char var;
+  struct expr* exp;
+}
+
+%token <num> NUMBER
+%token <num> ADD SUB MUL DIV ABS
+%token <num> OPREN CPREN
+%token <num> EOL
+
+%type <num> exp factor term
 
 %%
 

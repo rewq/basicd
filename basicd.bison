@@ -3,16 +3,12 @@
 %defines "bison.h" // Header file including token declarations needed by Flex
 %parse-param {int *somevalue} // Adds variables to be passed into yyparse()
 
-/* This section is copied verbatim to the s.c file generated */
+/* This section is copied verbatim to the .C file generated */
 %code{
-
 #include "flex.h"
 #include "ast.h"
 /* yyerror() needs the parse-param's defined aswell */
-void yyerror (int *somevalue, char const *s){ 
-	fprintf (stderr, "%s\n", s);
-}
-
+void yyerror (int *somevalue, char const *s);
 }
 
 /* YYLVAL types*/
@@ -54,4 +50,7 @@ term: NUMBER {*somevalue += 1;}
 
 %%
 
-
+/* 	Error handling - this is the default function reccomended by Bison docs */
+void yyerror (int *somevalue, char const *s){ 
+	fprintf (stderr, "%s\n", s);
+}

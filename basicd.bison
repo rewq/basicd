@@ -1,56 +1,77 @@
 /* Bison Directives */
 %output  "bison.c" // Code containing yyparse()
 %defines "bison.h" // Header file including token declarations needed by Flex
-%parse-param {int *somevalue} // Adds variables to be passed into yyparse()
+%parse-param {struct astnode* rootnode} // Adds variables to be passed into yyparse()
 
 /* This section is copied verbatim to the .C file generated */
 %code{
 #include "flex.h"
 #include "ast.h"
 /* yyerror() needs the parse-param's defined aswell */
-void yyerror (int *somevalue, char const *s);
+void yyerror (struct astnode* rootnode, char const *s);
+
+int evaluate(node *e)
+{
+    switch (e->type) {
+        case T_VAL:
+            return e->value;
+        case T_MUL:
+            return evaluate(e->left) * evaluate(e->right);
+        case T_ADD:
+            return evaluate(e->left) + evaluate(e->right);
+        default:
+            // shouldn't be here
+            return 0;
+    }
+}
 }
 
 /* YYLVAL types*/
 %union{
   int num;
   char var;
-  struct expr* exp;
+  struct astnode* node;
 }
 
+
 /* Terminal Tokens and Type Declaration */
-%token <num> NUMBER ADD SUB MUL DIV ABS
-%token <num> OPREN CPREN CBRACK OBRACK
-%token <num> EOL
+%token <num> NUMBER 
+%token ADD SUB MUL DIV
+%token OPREN CPREN CBRACK OBRACK
+%token EOL
 
 /* Non Terminal Type Declaration */
-%type <num> exp factor term
+%type <node> expr
+
+%left '+' ADD
+%left '*' MUL
 
 
 /* Grammar Section */
 %%
-
-explist: 
-| explist exp EOL {printf("= %d\n", $2);printf("%i NUM's added\n",*somevalue); }
-;
-
-exp: factor
-| exp ADD factor { $$ = $1 + $3; }
-| exp SUB factor { $$ = $1 - $3; }
-;
-
-factor: term
-| factor MUL term { $$ = $1 * $3; }
-;
-
-term: NUMBER {*somevalue += 1;}
-| ABS term  { $$ = $2 >= 0 ? $2 : -$2; }
-| OPREN exp CPREN { $$ = $2; }
-;
-
+input
+    : expr EOL { rootnode = $1;print_ast(rootnode);}
+    ;
+ 
+expr
+    : expr[L] ADD expr[R] { $$ = add_node($L, T_ADD, $R); }
+    | expr[L] MUL expr[R] { $$ = add_node($L, T_MUL, $R); }
+    | OPREN expr[E] CPREN { $$ = $E; }
+    | NUMBER { $$ = add_num($1); }
+    ;
 %%
-
+/*
+input
+    : expr { *expression = $1; }
+    ;
+ 
+expr
+    : expr[L] TOKEN_PLUS expr[R] { $$ = createOperation( ePLUS, $L, $R ); }
+    | expr[L] TOKEN_MULTIPLY expr[R] { $$ = createOperation( eMULTIPLY, $L, $R ); }
+    | TOKEN_LPAREN expr[E] TOKEN_RPAREN { $$ = $E; }
+    | TOKEN_NUMBER { $$ = createNumber($1); }
+    ;*/
 /* 	Error handling - this is the default function reccomended by Bison docs */
-void yyerror (int *somevalue, char const *s){ 
+void yyerror (struct astnode* rootnode, char const *s){ 
 	fprintf (stderr, "%s\n", s);
 }

@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include "bison.h"
 #include "flex.h"
+#include "ast.h"
 
 int main(int argc, char **argv) {
+	node* rootnode = NULL;
 
-	int somevalue = 0;
-  	yyparse((int*)&somevalue);
-  	
+	char test[]="2+2+2";
+  	yyparse(rootnode);
 }

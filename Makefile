@@ -1,5 +1,7 @@
+CC=cc
+
 target:
-	bison basicd.bison
+	bison3 basicd.bison
 	flex basicd.flex
 	$(CC) -std=gnu99 -o basicd main.c flex.c bison.c ast.c
 clean:

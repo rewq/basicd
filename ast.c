@@ -40,7 +40,19 @@ void graphviz(node* start_node) {
   	system("dot -Tpng ast.dot > ast.png && open ast.png");
 }
 void dump_ast(FILE *dotfile, node* start_node, int index){
-	fprintf(dotfile, "node%i;\n", index);
+	switch(start_node->type) {
+	  case T_ADD :
+	     fprintf(dotfile, "node%i [label=\"+\"];\n", index);
+	     break;
+	  case T_MUL :
+	     fprintf(dotfile, "node%i [label=\"*\"];\n", index);
+	     break;
+	  case T_VAL :
+	     fprintf(dotfile, "node%i [label=\"%i\"];\n", index,start_node->value);
+	     break;
+	  default :
+	     fprintf(dotfile, "node%i;\n", index);
+	}
 	if (start_node->value > 0){
 		fprintf(dotfile, "node%i [label=\"%i\"];\n", index,start_node->value);
 	}

@@ -8,6 +8,5 @@ int main(int argc, char **argv) {
 	node* rootnode;
   	yyparse(&rootnode);
 
-  	print_ast(rootnode);
-  	dump_ast(rootnode, 1);
+  	graphviz(rootnode);
 }

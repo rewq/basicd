@@ -1,6 +1,4 @@
 #include "ast.h"
-#include <stdlib.h>
-#include <stdio.h>
 
 node* add_node(node* left, int type, node* right){
   node* n = malloc(sizeof(node));
@@ -32,14 +30,26 @@ void print_ast(node* start_node){
 	}
 }
 
-void dump_ast(node* start_node, int index){
-	printf("node%i;\n", index);
+void graphviz(node* start_node) {
+	FILE *dotfile = fopen("ast.dot", "w");
+	fprintf(dotfile, "digraph tree {\n");
+	dump_ast(dotfile, start_node, 1);
+	fprintf(dotfile, "}\n");
+	fclose(dotfile);
+
+  	system("dot -Tpng ast.dot > ast.png && open ast.png");
+}
+void dump_ast(FILE *dotfile, node* start_node, int index){
+	fprintf(dotfile, "node%i;\n", index);
+	if (start_node->value > 0){
+		fprintf(dotfile, "node%i [label=\"%i\"];\n", index,start_node->value);
+	}
 	if (start_node->left > 0){	
-		printf("node%i->node%i;\n", index, 2*index);
-		dump_ast(start_node->left,2*index);
+		fprintf(dotfile, "node%i->node%i;\n", index, 2*index);
+		dump_ast(dotfile, start_node->left,2*index);
 	}
 	if (start_node->right > 0){
-		printf("node%i->node%i;\n", index, 2*index+1);
-		dump_ast(start_node->right,2*index+1);
+		fprintf(dotfile, "node%i->node%i;\n", index, 2*index+1);
+		dump_ast(dotfile, start_node->right,2*index+1);
 	}
 }

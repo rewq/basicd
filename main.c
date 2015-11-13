@@ -5,8 +5,9 @@
 
 int main(int argc, char **argv) {
 
-	node* rootnode = NULL;
+	node* rootnode;
   	yyparse(&rootnode);
 
   	print_ast(rootnode);
+  	dump_ast(rootnode, 1);
 }

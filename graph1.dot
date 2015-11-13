@@ -1,0 +1,11 @@
+digraph g {
+	node1;
+	node1->node2;
+	node2;
+	node2->node4;
+	node4;
+	node2->node5;
+	node5;
+	node1->node3;
+	node3;
+ }

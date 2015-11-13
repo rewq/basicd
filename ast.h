@@ -15,3 +15,4 @@ node* add_node(node* left, int type, node* right);
 node* add_num(int value);
 
 void print_ast(node* start_node);
+void dump_ast(node* start_node, int index);

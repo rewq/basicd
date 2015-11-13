@@ -14,7 +14,7 @@
 "{"    {return OBRACK;}
 "}"    {return CBRACK;}
 [0-9]+ {yylval.num = atoi(yytext); return NUMBER;}
-\n     {return EOL;}
 [ \t]  { /* ignore whitespaces */ }
+\n     {return 0;}
 .      {printf("Mistery character %s\n", yytext);}
 %%

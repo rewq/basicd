@@ -4,8 +4,9 @@
 #include "ast.h"
 
 int main(int argc, char **argv) {
-	node* rootnode = NULL;
 
-	char test[]="2+2+2";
-  	yyparse(rootnode);
+	node* rootnode = NULL;
+  	yyparse(&rootnode);
+
+  	print_ast(rootnode);
 }

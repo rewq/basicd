@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 node* add_node(node* left, int type, node* right){
-  node* n = malloc(sizeof(n));
+  node* n = malloc(sizeof(struct astnode));
   n->type = type;
   n->value = 0;
   n->left = left;
@@ -11,7 +11,7 @@ node* add_node(node* left, int type, node* right){
   return n;
 }
 node* add_num(int value){
-  node* n = malloc(sizeof(n));
+  node* n = malloc(sizeof(struct astnode));
   n->type = T_VAL;
   n->value = value;
 

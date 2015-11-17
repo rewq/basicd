@@ -37,7 +37,11 @@ void graphviz(node* start_node) {
 	fprintf(dotfile, "}\n");
 	fclose(dotfile);
 
-  	system("dot -Tpng ast.dot > ast.png && open ast.png");
+	// OS X
+  	//system("dot -Tpng ast.dot > ast.png && open ast.png");
+
+  	// Linux
+  	system("dot -Tpng ast.dot > ast.png && xdg-open ast.png");
 }
 void dump_ast(FILE *dotfile, node* start_node, int index){
 	switch(start_node->type) {

@@ -1,10 +1,13 @@
+/* Flex directives */
 %option outfile="flex.c" header-file="flex.h"
 %option noyywrap nounput noinput
 
+/* This code is copied verbatim to the .c file generated - includes token defs from bison */
 %{
 #include "bison.h"
 %}
 
+/* Grammar */
 %%
 "+"    {return ADD;}
 "*"    {return MUL;}

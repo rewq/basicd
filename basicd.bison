@@ -28,6 +28,7 @@ void yyerror (struct astnode **rootnode, char const *s);
 /* Non Terminal Type Declaration */
 %type <node> expr
 
+/* Precedence */
 %left '+' ADD
 %left '*' MUL
 
@@ -45,7 +46,8 @@ expr
     | NUMBER { $$ = add_num($1); }
     ;
 %%
-/* 	Error handling - this is the default function reccomended by Bison docs */
+
+/* Error handling - this is the default function reccomended by Bison docs */
 void yyerror (struct astnode **rootnode, char const *s){ 
 	fprintf (stderr, "%s\n", s);
 }

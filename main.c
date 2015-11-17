@@ -6,7 +6,11 @@
 int main(int argc, char **argv) {
 
 	yyin = fopen(argv[1], "r");
-	
+
+	if (yyin == NULL) {
+		puts("No source file (.bd) given");
+		printf("\n>>> ");
+	}
 	node* rootnode;
   	yyparse(&rootnode);
 
